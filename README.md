@@ -19,7 +19,7 @@ Avant de commencer, vous devez installer les outils suivants sur votre machine :
 
 `docker-compose build`
 
-###Démarrer les services
+Démarrer les services
 
 `docker-compose up`
 
