@@ -4,7 +4,7 @@ import { connectToServer } from "./db/connection.js"; // ✅ Correct import
 import posts from "./routes/posts.js";
 
 
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.SERVER_PORT || 5050;
 const app = express();
 
 app.use(cors());

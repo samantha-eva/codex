@@ -1,6 +1,11 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 
-const URI = "mongodb://mongo:27017/codex";
+const NOM_DATABASE = process.env.NOM_DATABASE;
+const MONGO_HOST =  process.env.MONGO_HOST;
+const MONGO_PORT = process.env.MONGO_PORT;
+
+const URI = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${NOM_DATABASE}`;
+
 const client = new MongoClient(URI, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -14,8 +19,8 @@ let db;
 const connectToServer = async () => {
   try {
     await client.connect();
-    db = client.db("admin");
-    console.log("✅ Successfully connected to MongoDB");
+    db = client.db(NOM_DATABASE);
+    console.log("✅ Successfully connected to MongoDB", URI);
   } catch (error) {
     console.error("❌ MongoDB connection error:", error);
     process.exit(1);  // Exit the app if the connection fails
