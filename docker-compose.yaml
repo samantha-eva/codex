@@ -1,22 +1,26 @@
 services:
   backend:
     build: ./backend
+    env_file: .env
     container_name: backend
     ports:
-      - "5050:5050"
+      - ${SERVER_PORT}:${SERVER_PORT}
+    networks:
+      - codex_network
     volumes:
       - ./backend:/app
       - /app/node_modules
     depends_on:
-      - mongodb
+      - mongo
     environment:
-      - MONGO_URL=mongodb://mongo:27017/codex
+      - MONGO_URL=mongodb://${MONGO_HOST}:{MONGO_PORT}/${NOM_DATABASE}
 
   frontend:
     build: ./frontend
+    env_file: .env
     container_name: frontend
     ports:
-      - "5173:5173"
+      - ${APP_PORT}:${APP_PORT}
     networks:
       - codex_network
     volumes:
@@ -27,10 +31,11 @@ services:
     environment:
       - WATCHPACK_POLLING=true
       - REACT_APP_API_URL=http://backend:5050
-  mongodb:
+  mongo:
     image: mongo:latest
+    env_file: .env
     ports:
-      - "27017:27017"
+      - ${MONGO_PORT}:${MONGO_PORT}
     networks:
       - codex_network
     volumes:
