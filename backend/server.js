@@ -1,19 +1,33 @@
 import express from "express";
 import cors from "cors";
-import { connectToServer } from "./db/connection.js"; // ✅ Correct import;
-
+import mongoose from "mongoose";
+// import { connectToServer } from "./db/connection.js";
+import blogRoutes from "./src/routes/blog.route.js";
 
 const PORT = process.env.SERVER_PORT || 5050;
+
+const NOM_DATABASE = process.env.NOM_DATABASE;
+const MONGO_HOST =  process.env.MONGO_HOST;
+const MONGO_PORT = process.env.MONGO_PORT;
+
+const URI = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${NOM_DATABASE}`;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Le serveur Express est prêt!");
-});
+app.use("/api/blog/", blogRoutes);
 
+// app.get("/", (req, res) => {
+//   res.send("Le serveur Express est prêt!");
+// });
+async function main() {
+  await mongoose.connect(URI);
+  app.get('/', (req, res) => {
+    res.send('✅ Le serveur est prêt');
+  });
+}
+main().then(() => console.log(' ✅Mongodb connected successfully!')).catch(err => console.log(err));
 app.listen(PORT, () => {
-  connectToServer(); // ✅ Call the function directly
-  console.log(`Server listening on port ${PORT}`);
+  console.log(`Example app listening on port ${PORT}`);
 });
