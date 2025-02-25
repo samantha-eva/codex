@@ -1,5 +1,6 @@
 import express from "express";
 import Blog  from "../model/blog.model.js"
+import Comment  from "../model/comment.model.js"
 
 const router = express.Router();
 
@@ -73,6 +74,9 @@ router.get("/:id", async(req, res) => {
       return res.status(404).send({ message: "Post non trouvé"})
     }
 
+    const comment = await Comment.find({postId: postId}).populate('user', 'username email')
+
+
     res.status(200).send({
       message: "Post trouvé avec success",
       post: post
@@ -116,6 +120,8 @@ router.delete("/:id", async(req,res) => {
     if(!post){
       return res.status(404).send({ message: "Post non trouvé"})
     }
+
+    await Comment.deleteMany({postId: postId})
 
     res.status(200).send({
       message: "Post supprimé avec succes",

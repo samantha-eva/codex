@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import blogRoutes from "./src/routes/blog.route.js";
+import commentRoutes from "./src/routes/comment.route.js";
 
 const PORT = process.env.SERVER_PORT || 5050;
 
@@ -16,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/blog/", blogRoutes);
-
+app.use("/api/comments/", commentRoutes);
 
 async function main() {
   await mongoose.connect(URI);
