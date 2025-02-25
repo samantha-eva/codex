@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import blogRoutes from "./src/routes/blog.route.js";
 import commentRoutes from "./src/routes/comment.route.js";
+import userRoutes from "./src/routes/auth.user.route.js";
 
 const PORT = process.env.SERVER_PORT || 5050;
 
@@ -16,6 +17,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/auth", userRoutes);
 app.use("/api/blog/", blogRoutes);
 app.use("/api/comments/", commentRoutes);
 
