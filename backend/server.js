@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-// import { connectToServer } from "./db/connection.js";
 import blogRoutes from "./src/routes/blog.route.js";
 
 const PORT = process.env.SERVER_PORT || 5050;
@@ -18,9 +17,7 @@ app.use(express.json());
 
 app.use("/api/blog/", blogRoutes);
 
-// app.get("/", (req, res) => {
-//   res.send("Le serveur Express est prêt!");
-// });
+
 async function main() {
   await mongoose.connect(URI);
   app.get('/', (req, res) => {

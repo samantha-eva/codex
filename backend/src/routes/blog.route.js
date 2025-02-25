@@ -3,16 +3,11 @@ import Blog  from "../model/blog.model.js"
 
 const router = express.Router();
 
-// Define your routes
-router.get("/", (req, res) => {
-  res.send("Blog route is working gg!");
-});
-
 //Create blogs
 router.post("/create-post", async (req, res) => {
   try {
     console.log("Données reçues :", req.body); // ✅ Affiche les données dans la console
-    
+
     const newPost = new Blog({ ...req.body });
     await newPost.save();
 
@@ -22,5 +17,148 @@ router.post("/create-post", async (req, res) => {
     res.status(500).json({ message: "Erreur lors de la création du post", error: error.message });
   }
 });
+
+//All blogs
+router.get("/", async(req, res) => {
+  try{
+    const {search, creatory, location} = req.query;
+    console.log(search);
+    let query = {}
+
+    if(search){
+        query = {
+          ...query,
+          $or: [
+            {title: {$regex: search, $options: "i"}},
+            {content: {$regex: search, $options: "i"}}
+          ]
+        }
+    }
+
+    if(creatory){
+      query = {
+        ...query,
+        category
+      }
+    }
+
+    if(location){
+      query = {
+        ...query,
+        location
+      }
+    }
+
+
+
+    const post = await Blog.find(query);
+    res.status(200).send({
+      message: "All posts success",
+      posts: post
+    })
+  }catch(error){
+    console.error("Erreur lors de la création du post", error);
+    res.status(500).json({ message: "Erreur lors de la création du post", error: error.message });
+  }
+ 
+});
+
+
+router.get("/:id", async(req, res) => {
+  try{
+    const postId = req.params.id
+    const post = await Blog.findById(postId);
+
+    if(!post){
+      return res.status(404).send({ message: "Post non trouvé"})
+    }
+
+    res.status(200).send({
+      message: "Post trouvé avec success",
+      post: post
+    })
+
+  }catch(error){
+    console.error("Erreur lors de la correspondace du post", error);
+    res.status(500).send({ message: "Erreur lors du detail du post"});
+  }
+})
+
+
+router.patch("/update/:id", async(req, res) => {
+  try{
+    const postId = req.params.id;
+    const updatedPost = await Blog.findByIdAndUpdate(postId, {
+      ...req.body
+    }, {new: true})
+
+    if(!updatedPost){
+      return res.status(404).send({ message: "Post non trouvé"})
+    }
+    res.status(200).send({
+      message: "Post modifié avec succes",
+      post: updatedPost
+    })
+
+  }catch(error){
+    console.error("Erreur lors de la correspondace du post", error);
+    res.status(500).send({ message: "Erreur lors de la modification du post"});
+  }
+})
+
+
+router.delete("/:id", async(req,res) => {
+  try{
+
+    const postId = req.params.id;
+    const post = await Blog.findByIdAndDelete(postId)
+
+    if(!post){
+      return res.status(404).send({ message: "Post non trouvé"})
+    }
+
+    res.status(200).send({
+      message: "Post supprimé avec succes",
+      post: post
+    })
+
+  }catch(error){
+    console.error("Error delete post", error);
+    res.status(500).send({ message: "Error delete post"})
+  }
+})
+
+
+router.patch("/related/:id", async(req, res) => {
+  try{
+    const {id} = req.params.id;
+
+    if(!id){
+      return res.status(404).send({ message: "Post  id est obligatoire"})
+    }
+
+    const blog = await Blog.findById(id);
+    
+    if(!blog){
+      return res.status(404).send({ message: "Post n'est pas trouvé"})
+    }
+
+    const titleRegex = new RegExp(blog.title.split(' ').join('|'), 'i');
+
+    const relatedQuery = {
+      _id: {$ne: id},
+      title: {$regex: titleRegex}
+    }
+
+    const relatedPost = await Blog.find(relatedQuery)
+    res.status(200).send({ message: "Post modifié avec succes", post: relatedPost})
+
+  }catch(error){
+    console.error("Erreur lors de la correspondace du post", error);
+    res.status(500).send({ message: "Erreur lors de la modification du post"});
+  }
+})
+
+
 
 export default router; // ✅ Add default export
