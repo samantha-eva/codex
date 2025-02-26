@@ -1,14 +1,16 @@
 import express from "express";
 import Blog  from "../model/blog.model.js"
 import Comment  from "../model/comment.model.js"
+import verifyToken from "../middleware/verifyToken.js";
+import isAdmin from "../middleware/isAdmin.js";
 
 const router = express.Router();
 
 //Create blogs
-router.post("/create-post", async (req, res) => {
+router.post("/create-post",verifyToken,isAdmin, async (req, res) => {
   try {
    
-    const newPost = new Blog({ ...req.body });
+    const newPost = new Blog({ ...req.body, author: req.userId });
     await newPost.save();
 
     res.status(201).json({ message: "Le post est créé avec succès", post: newPost });
@@ -65,6 +67,7 @@ router.get("/", async(req, res) => {
 });
 
 
+//Detail blog par id 
 router.get("/:id", async(req, res) => {
   try{
     const postId = req.params.id
@@ -88,8 +91,8 @@ router.get("/:id", async(req, res) => {
   }
 })
 
-
-router.patch("/update/:id", async(req, res) => {
+//update blog post
+router.patch("/update/:id",verifyToken, async(req, res) => {
   try{
     const postId = req.params.id;
     const updatedPost = await Blog.findByIdAndUpdate(postId, {
@@ -110,8 +113,8 @@ router.patch("/update/:id", async(req, res) => {
   }
 })
 
-
-router.delete("/:id", async(req,res) => {
+//delete blog post
+router.delete("/:id",verifyToken, async(req,res) => {
   try{
 
     const postId = req.params.id;
@@ -134,8 +137,8 @@ router.delete("/:id", async(req,res) => {
   }
 })
 
-
-router.patch("/related/:id", async(req, res) => {
+//related blog post
+router.get("/related/:id", async(req, res) => {
   try{
     const {id} = req.params.id;
 
