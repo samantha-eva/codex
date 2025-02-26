@@ -7,8 +7,7 @@ const router = express.Router();
 //Create blogs
 router.post("/create-post", async (req, res) => {
   try {
-    console.log("Données reçues :", req.body); // ✅ Affiche les données dans la console
-
+   
     const newPost = new Blog({ ...req.body });
     await newPost.save();
 
@@ -52,7 +51,8 @@ router.get("/", async(req, res) => {
 
 
 
-    const post = await Blog.find(query);
+    const post = await Blog.find(query).populate('author', 'email').sort({createdAt: -1});
+
     res.status(200).send({
       message: "All posts success",
       posts: post

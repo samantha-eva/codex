@@ -4,10 +4,17 @@ import mongoose from "mongoose";
 const BlogSchema = new mongoose.Schema({
     title: String,
     description: String,
-    content: String,
+    content: {
+        type: Object,
+        required: true
+    },
     coverImg: String,
     category: String,
-    author: String,
+    author: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "User",
+        required: true
+    },
     rating: Number,
     createdAt : {
         type: Date,
