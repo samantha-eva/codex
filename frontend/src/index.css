@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
-@theme {
-    --color-tomato: #990000;
+@layer base {
+  :root {
+    --color-bgPrimary: #F7F8F9;
+    --color-active: #007bff; /* Bleu */
   }
+}
+
+@layer components {
+  .active {
+    color: var(--color-active);
+  }
+}
