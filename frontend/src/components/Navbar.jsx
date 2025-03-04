@@ -15,7 +15,7 @@ const Navbar = () => {
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className='bg-white py-6 border'>
+    <header className='bg-white py-6 border-0'>
         <nav className='container mx-auto flex justify-between px-5'>
             <a href='/'>
                 <img src="/logo_codex.png" className='h-18'/>

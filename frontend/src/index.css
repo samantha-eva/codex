@@ -2,8 +2,9 @@
 
 @layer base {
   :root {
-    --color-bgPrimary: #F7F8F9;
-    --color-active: #007bff; /* Bleu */
+    --color-bgPrimary: #eff1f3; /* Rose */
+    --color-active: #1f5bff;
+    --color-primary: #000000;
   }
 }
 
@@ -12,3 +13,13 @@
     color: var(--color-active);
   }
 }
+
+
+
+@layer utilities {
+  .bg-primary {
+    background-color: var(--color-bgPrimary);
+  }
+}
+
+
