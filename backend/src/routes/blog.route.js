@@ -53,12 +53,9 @@ router.get("/", async(req, res) => {
 
 
 
-    const post = await Blog.find(query).populate('author', 'email').sort({createdAt: -1});
+    const posts = await Blog.find(query).populate('author', 'email').sort({createdAt: -1});
 
-    res.status(200).send({
-      message: "All posts success",
-      posts: post
-    })
+    res.status(200).send({posts})
   }catch(error){
     console.error("Erreur lors de la création du post", error);
     res.status(500).json({ message: "Erreur lors de la création du post", error: error.message });

@@ -20,10 +20,10 @@ const Navbar = () => {
             <a href='/'>
                 <img src="/logo_codex.png" className='h-18'/>
             </a>
-            <ul class="sm:flex hidden items-center gap-8">
+            <ul className="sm:flex hidden items-center gap-8">
                 {
                     navLists.map((list, index) => (
-                    <li>
+                    <li key={index}>
                         <NavLink to= {`${list.path}`}
                             className={({ isActive}) =>
                                 isActive ? "active": ""
@@ -54,7 +54,7 @@ const Navbar = () => {
                 <ul className='fixed top-[108px] left-0 w-full h-auto pb-8 border-b bg-white shadow-sm z-50'>
                     {
                         navLists.map((list, index) => (
-                        <li className='mt-5 px-4'>
+                        <li className='mt-5 px-4' key={index}>
                             <NavLink to= {`${list.path}`}
                                 className={({ isActive}) =>
                                     isActive ? "active": ""

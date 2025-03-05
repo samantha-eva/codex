@@ -14,8 +14,11 @@ const MONGO_PORT = process.env.MONGO_PORT;
 const URI = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${NOM_DATABASE}`;
 const app = express();
 
-app.use(cors());
 app.use(express.json());
+app.use(cors({
+  origin:'http://localhost:5173',
+  credentials: true
+}))
 
 app.use("/api/auth", userRoutes);
 app.use("/api/blog/", blogRoutes);
