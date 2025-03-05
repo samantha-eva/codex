@@ -2,7 +2,7 @@
 
 @layer base {
   :root {
-    --color-bgPrimary: #eff1f3; /* Rose */
+    --color-bgPrimary: #ebeded; /* Rose */
     --color-active: #1f5bff;
     --color-primary: #000000;
   }
