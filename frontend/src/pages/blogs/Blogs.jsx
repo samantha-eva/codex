@@ -37,7 +37,7 @@ export const Blogs = () => {
             to={`/blog/${blog._id}`}
             key={blog._id} 
             className="shadow-md">
-              <h2 className='text-xl p-4'>gggg{blog.title}</h2>
+              <h2 className='text-xl p-4'>{blog.title}</h2>
             </Link>
           ))
         }
