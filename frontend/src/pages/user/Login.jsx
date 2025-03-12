@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoginUserMutation } from '../../redux/features/auth/authApi';
+import { setUser } from '../../redux/features/auth/authSlice';
 
 const Login = () => {
     const  [email, setEmail] = useState('');
@@ -8,6 +10,7 @@ const Login = () => {
     const  [message, setMessage] = useState('');
     const [loginUser, {isLoading: loginLoading}] = useLoginUserMutation();
 
+    const dispatch = useDispatch(); // Ajoute useDispatch()
     const navigate = useNavigate();
 
     const handleLogin = async (e) =>{
@@ -19,7 +22,11 @@ const Login = () => {
         try{
             const response = await loginUser(data).unwrap();
             const {token,user } = response;
-            alert('login successfull')
+
+            // 🔹 Stocke dans Redux
+            dispatch(setUser({ user }));
+            localStorage.setItem('user', JSON.stringify(user));
+      
             navigate("/")
 
 
