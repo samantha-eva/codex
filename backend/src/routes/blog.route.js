@@ -74,12 +74,11 @@ router.get("/:id", async(req, res) => {
       return res.status(404).send({ message: "Post non trouvé"})
     }
 
-    const comment = await Comment.find({postId: postId}).populate('user', 'username email')
+    const comments = await Comment.find({postId: postId}).populate('user', 'username email')
 
 
     res.status(200).send({
-      message: "Post trouvé avec success",
-      post: post
+      post, comments
     })
 
   }catch(error){
@@ -137,7 +136,7 @@ router.delete("/:id",verifyToken, async(req,res) => {
 //related blog post
 router.get("/related/:id", async(req, res) => {
   try{
-    const {id} = req.params.id;
+    const {id} = req.params;
 
     if(!id){
       return res.status(404).send({ message: "Post  id est obligatoire"})
@@ -164,6 +163,7 @@ router.get("/related/:id", async(req, res) => {
     res.status(500).send({ message: "Erreur lors de la modification du post"});
   }
 })
+
 
 
 
