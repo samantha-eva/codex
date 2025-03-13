@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import avatarImg from "../assets/commentor.png";
 import { useLogoutUserMutation } from "../redux/features/auth/authApi";
 import { logout } from "../redux/features/auth/authSlice";
+
 const navLists = [
     {name: "Home", path:"/"},
     {name: "Projet", path:"/projet"},

@@ -2,8 +2,12 @@ import React from 'react'
 import commentorIcon from "../../../assets/commentor.png"
 import { formatDate } from '../../../utilis/formateDate'
 import PostAComment from './PostAComment'
+import { useSelector } from 'react-redux'
 
-const CommentCard = (comments) => {
+const CommentCard = ({comments}) => {
+    console.log('liste des commentaire', comments)
+    const user = useSelector((state) => state.auth.user);
+    
   return (
     <div className='my-6 bg-white p-8'>
         <div>
@@ -13,8 +17,8 @@ const CommentCard = (comments) => {
                     <div>
                         {
                             comments.map((comment, index) => (
-                                <div key={index}>
-                                    <div>
+                                <div key={index} className='mt-4'>
+                                    <div className='flex gap-4 items-center'>
                                         <img src={commentorIcon} className='h-14' />
       
                                         <div>
@@ -34,7 +38,7 @@ const CommentCard = (comments) => {
                             ))
                         }
                     </div>
-                </div> : <div className='text-lg font-medium'>No comments found</div>
+                </div> : <div className='text-lg font-medium'>No commentaires found</div>
             }
         </div>
 
